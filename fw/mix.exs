@@ -46,6 +46,7 @@ defmodule Fw.MixProject do
   defp deps do
     [
       {:nerves, "~> 0.9", runtime: false},
+      {:elixir_ale, "~> 1.0"},
       {:ui, path: "../ui"}
     ] ++ deps(@target)
   end

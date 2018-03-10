@@ -8,6 +8,7 @@ defmodule Fw.Application do
 
     # Define workers and child supervisors to be supervised
     children = [
+      worker(Fw.Leds, [])
       # worker(Fw.Worker, [arg1, arg2, arg3]),
     ]
 

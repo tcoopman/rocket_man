@@ -21,3 +21,12 @@ config :logger, :console,
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
+
+defmodule FakeLeds do
+  require Logger
+  def turn_off do
+    Logger.debug("Turning leds off")
+  end
+end
+
+config :ui, :leds, {FakeLeds, :turn_off}
