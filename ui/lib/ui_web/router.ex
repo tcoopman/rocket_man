@@ -20,7 +20,10 @@ defmodule UiWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", UiWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", UiWeb do
+    pipe_through :api
+
+    get "/on", LedController, :on
+    get "/off", LedController, :off
+  end
 end

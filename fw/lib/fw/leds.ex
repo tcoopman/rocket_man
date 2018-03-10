@@ -21,6 +21,15 @@ defmodule Fw.Leds do
         GenServer.call(:leds, :led_off)
     end
 
+    def turn_on() do
+        GenServer.call(:leds, :led_on)
+    end
+
+    def handle_call(:led_on, _from, state) do
+        Enum.each(state, &turn_led_on/1)
+        {:reply, :ok, state}
+    end
+
     def handle_call(:led_off, _from, state) do
         Enum.each(state, &turn_led_off/1)
         {:reply, :ok, state}
@@ -28,7 +37,6 @@ defmodule Fw.Leds do
 
     def handle_info(:leds, state) do
         Enum.each(state, &turn_led_on/1)
-
         {:noreply, state}
     end
 

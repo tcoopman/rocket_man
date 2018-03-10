@@ -24,9 +24,13 @@ import_config "#{Mix.env}.exs"
 
 defmodule FakeLeds do
   require Logger
-  def turn_off do
+  def turn_off() do
     Logger.debug("Turning leds off")
+  end
+
+  def turn_on() do
+    Logger.debug("Turning leds on")
   end
 end
 
-config :ui, :leds, {FakeLeds, :turn_off}
+config :ui, :leds, FakeLeds
