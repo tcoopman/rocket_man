@@ -2,7 +2,11 @@
 
 **TODO: Add description**
 
+The nerves_init_gadget expects to be connected over usb to set dns settings.
+Be sure to set dns settings in /etc/hosts if necessary
+
 ## Targets
+
 
 Nerves applications produce images for hardware targets based on the
 `MIX_TARGET` environment variable. If `MIX_TARGET` is unset, `mix` builds an

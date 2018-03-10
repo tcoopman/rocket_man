@@ -44,7 +44,10 @@ defmodule Fw.MixProject do
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
-    [{:nerves, "~> 0.9", runtime: false}] ++ deps(@target)
+    [
+      {:nerves, "~> 0.9", runtime: false},
+      {:ui, path: "../ui"}
+    ] ++ deps(@target)
   end
 
   # Specify target specific dependencies
@@ -53,7 +56,8 @@ defmodule Fw.MixProject do
   defp deps(target) do
     [
       {:shoehorn, "~> 0.2"},
-      {:nerves_runtime, "~> 0.4"}
+      {:nerves_runtime, "~> 0.4"},
+      {:nerves_init_gadget, "~> 0.2"}
     ] ++ system(target)
   end
 
