@@ -17,8 +17,8 @@ defmodule Fw.DotstarDebug do
         DotStar.off(140)
         DotStar.custom(1, <<0, 0, 0, 0>>)
         DotStar.custom(120, <<255, 0, 255, 0>>)
-        DotStar.off(140)
         Process.sleep(5000)
+        DotStar.off(140)
 
         # test_move(blue)
         # test_move(green)
