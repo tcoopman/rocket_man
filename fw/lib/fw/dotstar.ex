@@ -5,12 +5,12 @@ defmodule Fw.DotStar do
 
     alias ElixirALE.SPI
 
-    def start_link() do
-        GenServer.start_link(__MODULE__, nil, name: :dotstar)
+    def start_link(opts) do
+        GenServer.start_link(__MODULE__, opts, name: :dotstar)
     end
 
-    def init(nil) do
-        {:ok, pid} = SPI.start_link("spidev0.0", speed_hz: 32000000)
+    def init(opts) do
+        {:ok, pid} = SPI.start_link("spidev0.0", opts)
         {:ok, pid}
     end
 
@@ -31,6 +31,10 @@ defmodule Fw.DotStar do
     end
     def move(speed, command) do
         GenServer.call(:dotstar, {:move, 120, speed, command})
+    end
+    def release() do
+        GenServer.call(:dotstar, :release)
+        GenServer.stop(:dotstar)
     end
 
     def handle_call({:red,nb}, _from, pid) do
@@ -63,6 +67,11 @@ defmodule Fw.DotStar do
         move_(nb, speed, command)
         {:reply, :ok, pid}
     end
+    def handle_call(:release, _from, pid) do
+        SPI.release(pid)
+        {:reply, :ok, pid}
+    end
+
     def handle_info({:cycle, nb}, pid) do
         command = for _ <- 1..10, into: <<>>, do: <<231, nb*10, nb*10, nb*10>>
         full_command = start_frame() <> command <> end_frame()
@@ -92,7 +101,7 @@ defmodule Fw.DotStar do
         command
         # SPI.transfer(pid, command)
         |> :binary.bin_to_list
-        |> Enum.chunk_every(20)
+        |> Enum.chunk_every(50)
         |> Enum.each(fn bytes ->
             _ = SPI.transfer(pid, :binary.list_to_bin(bytes))
         end)
