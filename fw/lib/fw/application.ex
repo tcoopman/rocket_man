@@ -8,8 +8,8 @@ defmodule Fw.Application do
 
     # Define workers and child supervisors to be supervised
     children = [
-      # worker(Fw.Leds, [])
-      # worker(Fw.DotStar, [])
+      worker(Fw.DotStar, [[speed_hz: 8_000_000, delay_us: 20]]),
+      worker(Fw.Button, [])
       # worker(Fw.Worker, [arg1, arg2, arg3]),
     ]
 

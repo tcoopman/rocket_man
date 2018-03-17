@@ -101,7 +101,7 @@ defmodule Fw.DotStar do
         command
         # SPI.transfer(pid, command)
         |> :binary.bin_to_list
-        |> Enum.chunk_every(50)
+        |> Enum.chunk_every(20)
         |> Enum.each(fn bytes ->
             _ = SPI.transfer(pid, :binary.list_to_bin(bytes))
         end)
