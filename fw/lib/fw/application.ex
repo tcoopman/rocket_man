@@ -8,6 +8,7 @@ defmodule Fw.Application do
 
     # Define workers and child supervisors to be supervised
     children = [
+      {Registry, [keys: :unique, name: Register.FwRegister]},
       {Fw.Dotstar, [speed_hz: 16_000_000]},
       worker(Fw.Button, [])
       # worker(Fw.Worker, [arg1, arg2, arg3]),

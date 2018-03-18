@@ -1,3 +1,4 @@
 use Mix.Config
 
-config :spi, :module, Fw.SPIMock
+config :ale, :spi, Fw.SPIMock
+config :ale, :gpio, Fw.GPIO.Mock

@@ -50,7 +50,7 @@ defmodule Fw.MixProject do
       {:elixir_ale, "~> 1.0"},
       {:ui, path: "../ui"},
       {:mox, "~> 0.3", only: :test},
-      {:color_utils, "~> 0.2"},
+      {:color_utils, "~> 0.2"}
     ] ++ deps(@target)
   end
 

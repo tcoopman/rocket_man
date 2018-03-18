@@ -3,7 +3,7 @@ defmodule Fw.Dotstar do
 
   require Logger
 
-  @spi Application.fetch_env!(:spi, :module)
+  @spi Application.fetch_env!(:ale, :spi)
 
   def start_link(speed_hz: speed_hz) do
     GenServer.start_link(__MODULE__, [speed_hz: speed_hz], name: :dotstar)

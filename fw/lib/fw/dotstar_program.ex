@@ -44,4 +44,15 @@ defmodule Fw.DotstarDebug do
     Dotstar.move(50, command)
     Process.sleep(7000)
   end
+
+  def transition_colors() do
+    colors = Fw.Color.transition(500)
+
+    Enum.each(colors, fn %{blue: blue, green: green, red: red} ->
+      color_command = for _ <- 1..125, into: <<>>, do: <<255, blue, green, red>>
+      command = <<0, 0, 0, 0>> <> color_command
+      Fw.Dotstar.custom(1, command)
+      Process.sleep(10)
+    end)
+  end
 end
