@@ -5,9 +5,7 @@ defmodule Fw.SPI do
 
   @callback start_link(device_name :: String.t(), options :: [spi_option]) :: {:ok, pid}
 
-  @callback send(pid, command :: binary) :: :ok | {:error, term}
-end
+  @callback transfer(pid, command :: binary) :: binary | {:error, term}
 
-defmodule Fw.HardwareSPI do
-  @behaviour Fw.SPI
+  @callback release(pid) :: :ok
 end

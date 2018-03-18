@@ -5,8 +5,8 @@ defmodule Fw.Dotstar do
 
   @spi Application.fetch_env!(:spi, :module)
 
-  def start_link(opts) do
-    GenServer.start_link(__MODULE__, opts, name: :dotstar)
+  def start_link(speed_hz: speed_hz) do
+    GenServer.start_link(__MODULE__, [speed_hz: speed_hz], name: :dotstar)
   end
 
   def init(opts) do

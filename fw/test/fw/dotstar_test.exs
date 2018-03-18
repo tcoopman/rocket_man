@@ -10,11 +10,23 @@ defmodule FwTest.Dotstar do
 
   test "starting a dotstar" do
     Fw.SPIMock
-    |> expect(:start_link, fn name, _options ->
+    |> expect(:start_link, fn name, [speed_hz: 10] ->
       assert name == "spidev0.0"
       {:ok, self()}
     end)
 
-    assert {:ok, _pid} = Dotstar.start_link([])
+    assert {:ok, _pid} = Dotstar.start_link(speed_hz: 10)
+  end
+
+  test "red" do
+    Fw.SPIMock
+    |> expect(:start_link, fn _, _ -> {:ok, self()} end)
+    |> expect(:transfer, fn pid, command -> 
+        assert ^pid = self()
+        assert <<0, 0, 0, 0, 255, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255>> = command
+    end)
+
+    {:ok, _pid} = Dotstar.start_link(speed_hz: 10)
+    assert :ok = Dotstar.red(1)
   end
 end

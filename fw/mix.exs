@@ -65,7 +65,7 @@ defmodule Fw.MixProject do
   end
 
   defp elixirc_paths(:test), do: ["test/support", "lib"]
-  defp elixirc_paths(_), do: ["lib"]
+  defp elixirc_paths(_), do: ["hardware", "lib"]
 
   defp system("rpi"), do: [{:nerves_system_rpi, ">= 0.0.0", runtime: false}]
   defp system("rpi0"), do: [{:nerves_system_rpi0, ">= 0.0.0", runtime: false}]
