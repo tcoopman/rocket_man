@@ -30,6 +30,25 @@ defmodule Fw.Program do
     {:noreply, %{state | state: :state2, task: pid}}
   end
 
+  @impl GenServer
+  def handle_info(:button_clicked, %{state: :state2} = state) do
+    :ok = kill(state.task)
+
+    pid =
+      spawn(fn ->
+        Enum.each(1..320, fn i ->
+          brightness = rem(i, 32)
+          color_command = for _ <- 1..125, into: <<>>, do: << <<7::3>>, <<brightness::5>>, 255, 0, 0 >>
+          command = <<0, 0, 0, 0>> <> color_command
+          Fw.Dotstar.custom(1, command)
+          Process.sleep(100)
+        end)
+      end)
+
+    {:noreply, %{state | state: :state3, task: pid}}
+  end
+
+  @impl GenServer
   def handle_info(:button_clicked, state) do
     :ok = kill(state.task)
     Fw.Dotstar.off(140)
