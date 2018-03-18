@@ -9,7 +9,7 @@ defmodule FwTest.Dotstar do
   setup :verify_on_exit!
 
   test "starting a dotstar" do
-    Fw.SPIMock
+    Fw.SPI.Mock
     |> expect(:start_link, fn name, [speed_hz: 10] ->
       assert name == "spidev0.0"
       {:ok, self()}
@@ -19,7 +19,7 @@ defmodule FwTest.Dotstar do
   end
 
   test "red" do
-    Fw.SPIMock
+    Fw.SPI.Mock
     |> expect(:start_link, fn _, _ -> {:ok, self()} end)
     |> expect(:transfer, fn pid, command ->
       assert ^pid = self()

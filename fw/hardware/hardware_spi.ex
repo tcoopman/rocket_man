@@ -1,4 +1,4 @@
-defmodule Fw.HardwareSPI do
+defmodule Fw.SPI.Hardware do
   @behaviour Fw.SPI
 
   alias ElixirALE.SPI

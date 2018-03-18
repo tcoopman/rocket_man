@@ -1,4 +1,4 @@
-defmodule Fw.HardwareGPIO do
+defmodule Fw.GPIO.Hardware do
   @behaviour Fw.GPIO
 
   alias ElixirALE.GPIO

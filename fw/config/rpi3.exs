@@ -32,5 +32,5 @@ config :ui, UiWeb.Endpoint,
 
 config :ui, :leds, Fw.Leds
 
-config :ale, :spi, Fw.HardwareSPI
-config :ale, :gpio, Fw.HardwareGPIO
+config :ale, :spi, Fw.SPI.Hardware
+config :ale, :gpio, Fw.GPIO.Hardware
