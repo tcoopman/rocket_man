@@ -21,6 +21,7 @@ config :nerves_network, :default,
     ipv4_address_method: :dhcp
   ]
 
+
 config :ui, UiWeb.Endpoint,
   http: [port: 80],
   url: [host: "rocket_man.local", port: 80],
@@ -31,3 +32,5 @@ config :ui, UiWeb.Endpoint,
   pubsub: [name: Ui.PubSub, adapter: Phoenix.PubSub.PG2]
 
 config :ui, :leds, Fw.Leds
+
+config :spi, :module, Fw.HardwareSPI

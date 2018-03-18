@@ -1,7 +1,7 @@
 defmodule Fw.HardwareSPI do
   @behaviour Fw.SPI
 
-  alias ElixirAle.SPI
+  alias ElixirALE.SPI
 
   def start_link(device_name, options) do
     SPI.start_link(device_name, options)

@@ -49,7 +49,8 @@ defmodule Fw.MixProject do
       {:nerves, "~> 0.9", runtime: false},
       {:elixir_ale, "~> 1.0"},
       {:ui, path: "../ui"},
-      {:mox, "~> 0.3", only: :test}
+      {:mox, "~> 0.3", only: :test},
+      {:color_utils, "~> 0.2"},
     ] ++ deps(@target)
   end
 

@@ -107,12 +107,12 @@ defmodule Fw.Dotstar do
 
   defp send_command(command, pid) do
     command
-    # @spi.transfer(pid, command)
-    |> :binary.bin_to_list()
-    |> Enum.chunk_every(20)
-    |> Enum.each(fn bytes ->
-      _ = @spi.transfer(pid, :binary.list_to_bin(bytes))
-    end)
+    @spi.transfer(pid, command)
+    # |> :binary.bin_to_list()
+    # |> Enum.chunk_every(20)
+    # |> Enum.each(fn bytes ->
+    #   _ = @spi.transfer(pid, :binary.list_to_bin(bytes))
+    # end)
   end
 
   defp cycle(nb) do
