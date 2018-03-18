@@ -7,8 +7,7 @@ config :nerves_init_gadget,
   node_name: nil,
   node_host: :mdns_domain
 
-config :nerves_network,
-  regulatory_domain: "BE"
+config :nerves_network, regulatory_domain: "BE"
 
 key_mgmt = System.get_env("NERVES_NETWORK_KEY_MGMT") || "WPA-PSK"
 
@@ -29,8 +28,6 @@ config :ui, UiWeb.Endpoint,
   root: Path.dirname(__DIR__),
   server: true,
   render_errors: [view: UiWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Ui.PubSub,
-           adapter: Phoenix.PubSub.PG2]
-    
+  pubsub: [name: Ui.PubSub, adapter: Phoenix.PubSub.PG2]
 
 config :ui, :leds, Fw.Leds

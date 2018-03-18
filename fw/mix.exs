@@ -12,11 +12,11 @@ defmodule Fw.MixProject do
       archives: [nerves_bootstrap: "~> 0.8"],
       deps_path: "deps/#{@target}",
       build_path: "_build/#{@target}",
-      elixirc_paths: elixirc_paths(Mix.env),
+      elixirc_paths: elixirc_paths(Mix.env()),
       lockfile: "mix.lock.#{@target}",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
-      aliases: ["loadconfig": [&bootstrap/1], "test": "test --no-start"],
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      aliases: [loadconfig: [&bootstrap/1], test: "test --no-start"],
       deps: deps()
     ]
   end
@@ -75,6 +75,5 @@ defmodule Fw.MixProject do
   defp system("ev3"), do: [{:nerves_system_ev3, ">= 0.0.0", runtime: false}]
   defp system("qemu_arm"), do: [{:nerves_system_qemu_arm, ">= 0.0.0", runtime: false}]
   defp system("x86_64"), do: [{:nerves_system_x86_64, ">= 0.0.0", runtime: false}]
-  defp system(target), do: Mix.raise "Unknown MIX_TARGET: #{target}"
-
+  defp system(target), do: Mix.raise("Unknown MIX_TARGET: #{target}")
 end
