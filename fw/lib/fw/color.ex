@@ -8,12 +8,11 @@ defmodule Fw.Color do
     step_size = 359.9 / (steps - 1)
     hues = for n <- 0..(steps - 1), do: step_size * n
 
-    colors =
-      Enum.map(hues, fn hue ->
-        ColorUtils.hsv_to_rgb(%ColorUtils.HSV{hue: hue, saturation: 100, value: 100.0})
-      end)
-      |> Enum.map(fn %ColorUtils.RGB{blue: blue, green: green, red: red} ->
-        %RGBA{blue: blue, red: red, green: green, alpha: 1}
-      end)
+    Enum.map(hues, fn hue ->
+      ColorUtils.hsv_to_rgb(%ColorUtils.HSV{hue: hue, saturation: 100, value: 100.0})
+    end)
+    |> Enum.map(fn %ColorUtils.RGB{blue: blue, green: green, red: red} ->
+      %RGBA{blue: blue, red: red, green: green, alpha: 1}
+    end)
   end
 end

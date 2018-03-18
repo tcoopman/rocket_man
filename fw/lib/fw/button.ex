@@ -2,6 +2,7 @@ defmodule Fw.Button do
   use GenServer
 
   @gpio Application.fetch_env!(:ale, :gpio)
+  @button_ignore_time Application.fetch_env!(:fw, :button_ignore_time)
 
   @doc """
   Starts a new button listener on `gpio` port.
@@ -25,17 +26,6 @@ defmodule Fw.Button do
       for {pid, _} <- entries, do: send(pid, :button_clicked)
     end)
 
-    # spawn(fn ->
-    #   colors = Fw.Color.transition(500)
-
-    #   Enum.each(colors, fn %{blue: blue, green: green, red: red} ->
-    #     color_command = for _ <- 1..125, into: <<>>, do: <<255, blue, green, red>>
-    #     command = <<0, 0, 0, 0>> <> color_command
-    #     Fw.Dotstar.custom(1, command)
-    #     Process.sleep(10)
-    #   end)
-    # end)
-
     state = %{state | ignore: true}
     start_ignore_timer()
 
@@ -43,9 +33,7 @@ defmodule Fw.Button do
   end
 
   @impl GenServer
-  def handle_info({:gpio_interrupt, _, :falling}, state) do
-    {:noreply, state}
-  end
+  def handle_info({:gpio_interrupt, _, :falling}, state), do: {:noreply, state}
 
   @impl GenServer
   def handle_info({:gpio_interrupt, _, _}, %{ignore: true} = state), do: {:noreply, state}
@@ -56,6 +44,6 @@ defmodule Fw.Button do
   end
 
   defp start_ignore_timer() do
-    Process.send_after(self(), :lift_ignore, 100)
+    Process.send_after(self(), :lift_ignore, @button_ignore_time)
   end
 end

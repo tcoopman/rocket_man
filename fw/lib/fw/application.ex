@@ -10,8 +10,8 @@ defmodule Fw.Application do
     children = [
       {Registry, [keys: :duplicate, name: :fw_pubsub]},
       {Fw.Dotstar, [speed_hz: 16_000_000]},
-      worker(Fw.Button, [])
-      # worker(Fw.Worker, [arg1, arg2, arg3]),
+      {Fw.Button, [topic_name: "button17", pin: 17]},
+      {Fw.Program, []}
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

@@ -11,3 +11,6 @@ config :ui, UiWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: []
+
+config :ale, :spi, Fw.SPI.Hardware
+config :ale, :gpio, Fw.GPIO.Hardware

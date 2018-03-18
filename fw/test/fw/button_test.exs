@@ -59,7 +59,7 @@ defmodule FwTest.ButtonTest do
 
     assert_receive_nb(1, :button_clicked)
 
-    Process.sleep(100)
+    Process.sleep(20)
 
     send(pid, {:gpio_interrupt, nil, :rising})
 
@@ -75,7 +75,7 @@ defmodule FwTest.ButtonTest do
           assert_receive_nb(nb - 1, message)
         end
     after
-      200 ->
+      1 ->
         if nb == 0 do
           :ok
         else

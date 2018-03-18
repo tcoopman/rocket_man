@@ -9,6 +9,7 @@ defmodule Fw.Dotstar do
     GenServer.start_link(__MODULE__, [speed_hz: speed_hz], name: :dotstar)
   end
 
+  @impl GenServer
   def init(opts) do
     {:ok, pid} = @spi.start_link("spidev0.0", opts)
     {:ok, pid}
@@ -39,6 +40,7 @@ defmodule Fw.Dotstar do
     GenServer.stop(:dotstar)
   end
 
+  @impl GenServer
   def handle_call({:red, nb}, _from, pid) do
     red_command = for _ <- 1..nb, into: <<>>, do: <<255, 0, 0, 255>>
     full_command = start_frame() <> red_command <> end_frame()
@@ -48,6 +50,7 @@ defmodule Fw.Dotstar do
     {:reply, :ok, pid}
   end
 
+  @impl GenServer
   def handle_call({:off, nb}, _from, pid) do
     off_command = for _ <- 1..nb, into: <<>>, do: <<224, 0, 0, 0>>
     full_command = start_frame() <> off_command <> end_frame()
@@ -57,6 +60,7 @@ defmodule Fw.Dotstar do
     {:reply, :ok, pid}
   end
 
+  @impl GenServer
   def handle_call({:custom, nb, binary}, _from, pid) do
     command = for _ <- 1..nb, into: <<>>, do: binary
 
@@ -64,21 +68,25 @@ defmodule Fw.Dotstar do
     {:reply, :ok, pid}
   end
 
+  @impl GenServer
   def handle_call({:cycle_start, nb}, _from, pid) do
     cycle(nb)
     {:reply, :ok, pid}
   end
 
+  @impl GenServer
   def handle_call({:move, nb, speed, command}, _from, pid) do
     move_(nb, speed, command)
     {:reply, :ok, pid}
   end
 
+  @impl GenServer
   def handle_call(:release, _from, pid) do
     @spi.release(pid)
     {:reply, :ok, pid}
   end
 
+  @impl GenServer
   def handle_info({:cycle, nb}, pid) do
     command = for _ <- 1..10, into: <<>>, do: <<231, nb * 10, nb * 10, nb * 10>>
     full_command = start_frame() <> command <> end_frame()
@@ -88,6 +96,7 @@ defmodule Fw.Dotstar do
     {:noreply, pid}
   end
 
+  @impl GenServer
   def handle_info({:moving, nb, speed, command}, pid) do
     empty = for _ <- 1..(120 - nb), into: <<>>, do: <<224, 0, 0, 0>>
     full_command = start_frame() <> empty <> command
@@ -106,13 +115,7 @@ defmodule Fw.Dotstar do
   end
 
   defp send_command(command, pid) do
-    command
     @spi.transfer(pid, command)
-    # |> :binary.bin_to_list()
-    # |> Enum.chunk_every(20)
-    # |> Enum.each(fn bytes ->
-    #   _ = @spi.transfer(pid, :binary.list_to_bin(bytes))
-    # end)
   end
 
   defp cycle(nb) do
