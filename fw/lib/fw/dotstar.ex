@@ -1,16 +1,16 @@
-defmodule Fw.DotStar do
+defmodule Fw.Dotstar do
     use GenServer
 
     require Logger
 
-    alias ElixirALE.SPI
+    @spi Application.fetch_env!(:spi, :module)
 
     def start_link(opts) do
         GenServer.start_link(__MODULE__, opts, name: :dotstar)
     end
 
     def init(opts) do
-        {:ok, pid} = SPI.start_link("spidev0.0", opts)
+        {:ok, pid} = @spi.start_link("spidev0.0", opts)
         {:ok, pid}
     end
 
@@ -68,7 +68,7 @@ defmodule Fw.DotStar do
         {:reply, :ok, pid}
     end
     def handle_call(:release, _from, pid) do
-        SPI.release(pid)
+        @spi.release(pid)
         {:reply, :ok, pid}
     end
 
@@ -99,11 +99,11 @@ defmodule Fw.DotStar do
 
     defp send_command(command, pid) do
         command
-        # SPI.transfer(pid, command)
+        # @spi.transfer(pid, command)
         |> :binary.bin_to_list
         |> Enum.chunk_every(20)
         |> Enum.each(fn bytes ->
-            _ = SPI.transfer(pid, :binary.list_to_bin(bytes))
+            _ = @spi.transfer(pid, :binary.list_to_bin(bytes))
         end)
     end
 

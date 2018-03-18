@@ -12,10 +12,11 @@ defmodule Fw.MixProject do
       archives: [nerves_bootstrap: "~> 0.8"],
       deps_path: "deps/#{@target}",
       build_path: "_build/#{@target}",
+      elixirc_paths: elixirc_paths(Mix.env),
       lockfile: "mix.lock.#{@target}",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
-      aliases: ["loadconfig": [&bootstrap/1]],
+      aliases: ["loadconfig": [&bootstrap/1], "test": "test --no-start"],
       deps: deps()
     ]
   end
@@ -47,7 +48,8 @@ defmodule Fw.MixProject do
     [
       {:nerves, "~> 0.9", runtime: false},
       {:elixir_ale, "~> 1.0"},
-      {:ui, path: "../ui"}
+      {:ui, path: "../ui"},
+      {:mox, "~> 0.3", only: :test}
     ] ++ deps(@target)
   end
 
@@ -61,6 +63,9 @@ defmodule Fw.MixProject do
       {:nerves_init_gadget, "~> 0.2"}
     ] ++ system(target)
   end
+
+  defp elixirc_paths(:test), do: ["test/support", "lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp system("rpi"), do: [{:nerves_system_rpi, ">= 0.0.0", runtime: false}]
   defp system("rpi0"), do: [{:nerves_system_rpi0, ">= 0.0.0", runtime: false}]

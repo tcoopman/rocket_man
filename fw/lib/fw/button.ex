@@ -14,12 +14,12 @@ defmodule Fw.Button do
     end
 
     def handle_info({:gpio_interrupt, _, :rising}, state) do
-        Fw.DotStar.red(140)
+        Fw.Dotstar.red(140)
         IO.inspect "red"
         {:noreply, state}
     end
     def handle_info({:gpio_interrupt, _, :falling}, state) do
-        Fw.DotStar.off(140)
+        Fw.Dotstar.off(140)
         IO.inspect "off"
         {:noreply, state}
     end
