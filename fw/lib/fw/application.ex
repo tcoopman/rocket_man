@@ -9,7 +9,7 @@ defmodule Fw.Application do
     # Define workers and child supervisors to be supervised
     children = [
       {Registry, [keys: :duplicate, name: :fw_pubsub]},
-      {Fw.Dotstar, [speed_hz: 16_000_000]},
+      {Fw.Dotstar, [speed_hz: 8_000_000]},
       {Fw.Button, [topic_name: "button17", pin: 17]},
       {Fw.Program, []}
     ]
