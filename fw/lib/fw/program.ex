@@ -1,6 +1,8 @@
 defmodule Fw.Program do
   use GenServer
 
+  alias Fw.Programs.Walker
+
   def start_link([]) do
     GenServer.start_link(__MODULE__, nil)
   end
@@ -46,6 +48,24 @@ defmodule Fw.Program do
       end)
 
     {:noreply, %{state | state: :state3, task: pid}}
+  end
+
+  @impl GenServer
+  def handle_info(:button_clicked, %{state: :state3} = state) do
+    :ok = kill(state.task)
+
+    pid =
+      spawn(fn ->
+        state = Walker.new(120)
+        Enum.reduce(1..3200, state, fn(_, state) -> 
+          {command, sleep, state} = Walker.execute(state)
+          Fw.Dotstar.custom(1, command)
+          Process.sleep(sleep)
+          state
+        end)
+      end)
+
+    {:noreply, %{state | state: :state4, task: pid}}
   end
 
   @impl GenServer
