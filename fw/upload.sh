@@ -21,6 +21,11 @@
 # https://github.com/nerves-project/nerves_firmware_ssh/blob/master/priv/templates/script.upload.eex
 #
 
+if [ -z ${NERVES_NETWORK_PSK+x} ]; then echo 
+    echo "Network not set"
+    exit -1; 
+fi
+
 set -e
 
 DESTINATION=$1
