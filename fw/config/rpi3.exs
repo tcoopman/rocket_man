@@ -35,3 +35,10 @@ config :ui, :leds, Fw.Leds
 config :ale, :spi, Fw.SPI.Hardware
 config :ale, :gpio, Fw.GPIO.Hardware
 config :fw, :button_ignore_time, 300
+
+config :fw, :layout,
+  ultrasonic: [
+    trig: 6,
+    echo: 12
+  ],
+  on_off_button: 17

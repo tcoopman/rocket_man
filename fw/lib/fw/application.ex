@@ -6,12 +6,19 @@ defmodule Fw.Application do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
+    new_program_options = %Fw.NewProgram.Options{
+      button_topic: "button17",
+      measurement_topic: "measurement"
+    }
+
     # Define workers and child supervisors to be supervised
     children = [
       {Registry, [keys: :duplicate, name: :fw_pubsub]},
       {Fw.Dotstar, [speed_hz: 8_000_000]},
       {Fw.Button, [topic_name: "button17", pin: 17]},
-      {Fw.Program, []}
+      {Fw.NewProgram, new_program_options},
+      {Fw.Executer, []},
+      supervisor(Supervisor, Fw.MeasureDistance.supervisor(1000, "measurement"))
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

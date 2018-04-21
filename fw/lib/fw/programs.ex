@@ -1,4 +1,28 @@
 defmodule Fw.Programs do
+  defmodule Regular do
+    def new(length) do
+      %{
+        length: length,
+        iteration: 0,
+        colors: Fw.Color.transition(500)
+      }
+    end
+
+    def execute(%{length: length, iteration: i, colors: colors} = state) do
+      index = rem(i, Enum.count(colors))
+      color = Enum.at(colors, index)
+
+      state = %{state | iteration: i + 1}
+
+      {command(color, length), 20, state}
+    end
+
+    defp command(%{blue: blue, green: green, red: red}, length) do
+      color_command = for _ <- 1..length, into: <<>>, do: <<255, blue, green, red>>
+      <<0, 0, 0, 0>> <> color_command
+    end
+  end
+
   defmodule Walker do
     def new(length) do
       %{
@@ -84,13 +108,13 @@ defmodule Fw.Programs do
 
       state =
         case {state.up_or_down, state.iteration} do
-          {:up, i} when i+1 <= length / 2 ->
+          {:up, i} when i + 1 <= length / 2 ->
             state = %{state | iteration: i + 1}
 
           {:up, i} ->
             state = %{state | iteration: i - 1, up_or_down: :down}
 
-          {:down, i} when i-1 >= 0 ->
+          {:down, i} when i - 1 >= 0 ->
             state = %{state | iteration: i - 1}
 
           {:down, i} ->

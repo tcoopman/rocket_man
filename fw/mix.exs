@@ -61,7 +61,8 @@ defmodule Fw.MixProject do
     [
       {:shoehorn, "~> 0.2"},
       {:nerves_runtime, "~> 0.4"},
-      {:nerves_init_gadget, "~> 0.2"}
+      {:nerves_init_gadget, "~> 0.2"},
+      {:ring_logger, "~> 0.4"}
     ] ++ system(target)
   end
 
