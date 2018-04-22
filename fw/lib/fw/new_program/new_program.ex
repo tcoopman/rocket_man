@@ -45,7 +45,7 @@ defmodule Fw.NewProgram do
   end
 
   @impl GenServer
-  def handle_info({:distance, distance}, @state_regular) when distance < 20 do
+  def handle_info({:distance, distance}, @state_regular) when distance < 100 do
     Logger.info("received :distance: #{distance} in state #{@state_regular}")
     Fw.Executer.load_program(Fw.Programs.Walker)
     Process.send_after(self(), :cooldown, 5_000)
