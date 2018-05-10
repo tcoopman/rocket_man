@@ -47,7 +47,7 @@ defmodule Fw.MixProject do
   defp deps do
     [
       {:nerves, "~> 0.9", runtime: false},
-      {:elixir_ale, "~> 1.0"},
+      {:elixir_ale, git: "https://github.com/fhunleth/elixir_ale.git", branch: "2.0-fah"},
       {:ui, path: "../ui"},
       {:mox, "~> 0.3", only: :test},
       {:color_utils, "~> 0.2"}

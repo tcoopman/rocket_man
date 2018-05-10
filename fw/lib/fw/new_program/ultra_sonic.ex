@@ -39,6 +39,8 @@ defmodule Fw.UltraSonic do
 
     {result, :ok} = Task.await(task, 500)
     distance = 34_300 / 2 * result / 1_000_000
+    Logger.info(result, label: "result")
+    Logger.info(distance, label: "distance")
 
     {:reply, distance, state}
   end

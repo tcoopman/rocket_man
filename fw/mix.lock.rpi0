@@ -4,7 +4,7 @@
   "cowlib": {:hex, :cowlib, "1.0.2", "9d769a1d062c9c3ac753096f868ca121e2730b9a377de23dec0f7e08b1df84ee", [:make], [], "hexpm"},
   "distillery": {:hex, :distillery, "1.5.2", "eec18b2d37b55b0bcb670cf2bcf64228ed38ce8b046bb30a9b636a6f5a4c0080", [:mix], [], "hexpm"},
   "dns": {:hex, :dns, "2.1.0", "4777fe07ae3060c1d5d75024f05c26d7e11fa701d48a6edb9fc305d24cd12c8c", [:mix], [{:socket, "~> 0.3.13", [hex: :socket, repo: "hexpm", optional: false]}], "hexpm"},
-  "elixir_ale": {:hex, :elixir_ale, "1.0.3", "030d417a932eb70a3ca9652e104e815d447a0e4e92fb45aaedce914a03c824b0", [:make, :mix], [{:elixir_make, "~> 0.4", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm"},
+  "elixir_ale": {:git, "https://github.com/fhunleth/elixir_ale.git", "8a08b4fc3dd394ca9d30006073f886db591bb5b8", [branch: "2.0-fah"]},
   "elixir_make": {:hex, :elixir_make, "0.4.1", "6628b86053190a80b9072382bb9756a6c78624f208ec0ff22cb94c8977d80060", [:mix], [], "hexpm"},
   "gettext": {:hex, :gettext, "0.15.0", "40a2b8ce33a80ced7727e36768499fc9286881c43ebafccae6bab731e2b2b8ce", [:mix], [], "hexpm"},
   "mdns": {:hex, :mdns, "1.0.1", "c0e490f7c90ee6b546284c942ebb1c239375fb5f788e765d22ea8ff848cfe842", [:mix], [{:dns, "~> 2.0", [hex: :dns, repo: "hexpm", optional: false]}], "hexpm"},
