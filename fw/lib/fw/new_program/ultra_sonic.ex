@@ -9,7 +9,7 @@ defmodule Fw.UltraSonic do
   require Logger
   alias __MODULE__
 
-  @gpio GPIO
+  @gpio ElixirALE.GPIO
 
   @name __MODULE__
 
@@ -19,8 +19,8 @@ defmodule Fw.UltraSonic do
 
   @impl GenServer
   def init(trig: trig, echo: echo) do
-    {:ok, trig_pin} = @gpio.open(trig, :output)
-    {:ok, echo_pin} = @gpio.open(echo, :input)
+    {:ok, trig_pin} = @gpio.start_link(trig, :output)
+    {:ok, echo_pin} = @gpio.start_link(echo, :input)
     setup()
     {:ok, {trig_pin, echo_pin}}
   end
