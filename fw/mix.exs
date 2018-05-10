@@ -46,7 +46,7 @@ defmodule Fw.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:nerves, "~> 0.9", runtime: false},
+      {:nerves, "~> 1.0.0", runtime: false},
       {:elixir_ale, git: "https://github.com/fhunleth/elixir_ale.git", branch: "2.0-fah"},
       {:ui, path: "../ui"},
       {:mox, "~> 0.3", only: :test},
