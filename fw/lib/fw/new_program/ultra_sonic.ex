@@ -9,7 +9,7 @@ defmodule Fw.UltraSonic do
   require Logger
   alias __MODULE__
 
-  @gpio Application.fetch_env!(:ale, :gpio)
+  @gpio GPIO
 
   @name __MODULE__
 
@@ -19,10 +19,10 @@ defmodule Fw.UltraSonic do
 
   @impl GenServer
   def init(trig: trig, echo: echo) do
-    {:ok, trig_pid} = @gpio.start_link(trig, :output)
-    {:ok, echo_pid} = @gpio.start_link(echo, :input)
+    {:ok, trig_pin} = @gpio.open(trig, :output)
+    {:ok, echo_pin} = @gpio.open(echo, :input)
     setup()
-    {:ok, {trig_pid, echo_pid}}
+    {:ok, {trig_pin, echo_pin}}
   end
 
   def measure() do
@@ -30,12 +30,12 @@ defmodule Fw.UltraSonic do
   end
 
   @impl GenServer
-  def handle_call(:measure, _from, {trig_pid, echo_pid} = state) do
-    task = Task.async(fn -> read(echo_pid) end)
+  def handle_call(:measure, _from, {trig_pin, echo_pin} = state) do
+    task = Task.async(fn -> read(echo_pin) end)
     Process.sleep(60)
-    @gpio.write(trig_pid, 1)
+    @gpio.write(trig_pin, 1)
     Process.sleep(1)
-    @gpio.write(trig_pid, 0)
+    @gpio.write(trig_pin, 0)
 
     {result, :ok} = Task.await(task, 500)
     distance = 34_300 / 2 * result / 1_000_000
@@ -46,8 +46,8 @@ defmodule Fw.UltraSonic do
   end
 
   @impl GenServer
-  def handle_info(:setup, {trig_pid, _} = state) do
-    @gpio.write(trig_pid, 0)
+  def handle_info(:setup, {trig_pin, _} = state) do
+    @gpio.write(trig_pin, 0)
     Process.sleep(2_000)
     Logger.info("setup done")
     {:noreply, state}
@@ -57,16 +57,16 @@ defmodule Fw.UltraSonic do
     Process.send_after(self(), :setup, 1)
   end
 
-  defp read(echo_pid) do
-    case @gpio.read(echo_pid) do
-      0 -> read(echo_pid)
-      1 -> :timer.tc(UltraSonic, :time_result, [echo_pid])
+  defp read(echo_pin) do
+    case @gpio.read(echo_pin) do
+      0 -> read(echo_pin)
+      1 -> :timer.tc(UltraSonic, :time_result, [echo_pin])
     end
   end
 
-  def time_result(echo_pid) do
-    case @gpio.read(echo_pid) do
-      1 -> time_result(echo_pid)
+  def time_result(echo_pin) do
+    case @gpio.read(echo_pin) do
+      1 -> time_result(echo_pin)
       0 -> :ok
     end
   end

@@ -1,7 +1,7 @@
 defmodule Fw.Button do
   use GenServer
+  require Logger
 
-  @gpio Application.fetch_env!(:ale, :gpio)
   @button_ignore_time Application.fetch_env!(:fw, :button_ignore_time)
 
   @doc """
@@ -15,13 +15,14 @@ defmodule Fw.Button do
 
   @impl GenServer
   def init(topic_name: topic_name, pin: pin) do
-    {:ok, pid} = @gpio.start_link(pin, :input)
-    @gpio.set_int(pid, :both)
-    {:ok, %{gpio_pid: pid, topic_name: topic_name, ignore: false}}
+    {:ok, gpio} = GPIO.open(pin, :input)
+    :ok = GPIO.set_edge_mode(gpio, :both)
+    {:ok, %{gpio: gpio, topic_name: topic_name, ignore: false}}
   end
 
   @impl GenServer
-  def handle_info({:gpio_interrupt, _, :rising}, %{topic_name: topic_name, ignore: false} = state) do
+  def handle_info({:gpio, _, _, 1}, %{topic_name: topic_name, ignore: false} = state) do
+    Logger.info("dispatching click")
     Registry.dispatch(:fw_pubsub, topic_name, fn entries ->
       for {pid, _} <- entries, do: send(pid, :button_clicked)
     end)
@@ -33,10 +34,10 @@ defmodule Fw.Button do
   end
 
   @impl GenServer
-  def handle_info({:gpio_interrupt, _, :falling}, state), do: {:noreply, state}
+  def handle_info({:gpio, _pin_number, _timestamp, 0}, state), do: {:noreply, state}
 
   @impl GenServer
-  def handle_info({:gpio_interrupt, _, _}, %{ignore: true} = state), do: {:noreply, state}
+  def handle_info({:gpio, _, _, _}, %{ignore: true} = state), do: {:noreply, state}
 
   @impl GenServer
   def handle_info(:lift_ignore, state) do

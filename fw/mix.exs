@@ -9,7 +9,7 @@ defmodule Fw.MixProject do
       version: "0.1.0",
       elixir: "~> 1.4",
       target: @target,
-      archives: [nerves_bootstrap: "~> 0.8"],
+      archives: [nerves_bootstrap: "~> 1.0.0"],
       deps_path: "deps/#{@target}",
       build_path: "_build/#{@target}",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -47,10 +47,11 @@ defmodule Fw.MixProject do
   defp deps do
     [
       {:nerves, "~> 1.0.0", runtime: false},
-      {:elixir_ale, git: "https://github.com/fhunleth/elixir_ale.git", branch: "2.0-fah"},
-      {:ui, path: "../ui"},
+      {:gpio, git: "https://github.com/ElixirCircuits/gpio.git", branch: "master"},
+      # {:ui, path: "../ui"},
       {:mox, "~> 0.3", only: :test},
-      {:color_utils, "~> 0.2"}
+      {:color_utils, "~> 0.2"},
+      {:shoehorn, "~> 0.2"}
     ] ++ deps(@target)
   end
 
@@ -59,10 +60,10 @@ defmodule Fw.MixProject do
 
   defp deps(target) do
     [
-      {:shoehorn, "~> 0.2"},
       {:nerves_runtime, "~> 0.4"},
-      {:nerves_init_gadget, "~> 0.2"},
-      {:ring_logger, "~> 0.4"}
+      {:nerves_init_gadget, "~> 0.3"},
+      {:ring_logger, "~> 0.4"},
+      {:elixir_ale, "~> 1.0"}
     ] ++ system(target)
   end
 
